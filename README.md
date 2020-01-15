@@ -45,28 +45,37 @@ bakerx run alp3.9 alpine3.9-simple
 
 ![img](imgs/VM-preview.png)
 
-Let's ensure we can interact with the VM by clicking "Show". This will open a small terminal into virtual box.
-
-This is useful for quickly determining if your VM is working, which could fail to boot, or otherwise not be reachable if networking is broken.
+Let's ensure we can interact with the VM by clicking "Show". This will open a small terminal into virtual box. This is useful for quickly determining if your VM is working, which could fail to boot, or otherwise not be reachable if networking is broken.
 
 Close the preview window, but still leave the VM "Continue running in the background".
+
+### Connecting to VM via ssh.
+
+Using the ssh command provided by the `bakerx run` command, we can connect to the machine.
 
 ### Storage/Disk
 
 ![img](imgs/VM-storage-iso.png)
 
-Note: the size of the image: 26MB.
-
-### Connecting to VM.
-
+The image is loaded as a DVD into a disk drive. _Note: the size of the image: 26MB_.
 
 ### Power and VM State
 
-Persistance lost.
+You can control when a VM is running, saved, or turned off.
 
-Add a file.
-Stopping VM. Starting VM. Check if file.
+When a virtual machine is not being used, you have to option to "Power-off" the machine, which is essentially like pulling the power cord on a machine. There is a small risk that any work you saved on the virtual disk may not be persisted in the event of a sudden outtage.
 
+You can also "Save" the VM machine, which will persist the entire state of the machine, including RAM. Similiarly, you can take a "Snapshot" which will copy the state of the VM.
+
+**Persistance lost:** In this case, because the only storage available to our micro VM is a disk drive, if you pull the plug, everything you changed is lost.
+
+Short demo:
+
+> Let's add a file.  
+> Power off the VM.  
+> Start the VM again. Where's the file?
+
+_Note:_ However, _saving_ the VM will still persist the file, as the RAM contents are still perserved.
 
 ### Virtual Networking 
 
@@ -175,7 +184,7 @@ Executing VBoxManage modifyvm alp3.9  --uart1 0x3f8 4 --uartmode1 disconnected
 ```
 
 Create a network interface (eth0) configured with NAT networking.
-Create a network interface (eth1) configured with bridged networking with the wireless interface on the host machine (en0). Finally, add a portforward [host:2005 => VM:22].
+Create a network interface (eth1) configured with bridged networking with the wireless interface (en0) on the host machine. Finally, add a portforward [host:2005 => VM:22].
 
 ```
 Executing VBoxManage modifyvm alp3.9 --nic1 nat
