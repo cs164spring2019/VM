@@ -1,0 +1,21 @@
+setup:
+  local: {}
+  clean: |
+      echo "hello"
+    #   pushd . && cd servers/ansible-srv && baker destroy && popd
+    #   pushd . && cd servers/web-srv && baker destroy && popd
+    
+#verify: |
+#   opunit verify -i opunit_inventory.yml
+# # Target VMs created as part of tutorial. 
+# # Some commands executed within these machines. `target=ansible-srv`
+# targets:
+#   - baker: servers/ansible-srv
+#   - baker: servers/web-srv
+  
+README.md:
+    steps:
+      - selectAndRun: "Pull an 3.9 alpine image."
+      - selectAndRun: 
+          select: "Check which images are available on your system."
+          expectblock: "Verify image is pulled."
