@@ -145,7 +145,7 @@ Your VM would not be very useful if it does not have any way to connect to a net
   One disadvantange of a host-only network is that it requires sudo/admin privilenges to create the host-only network on the host (the first time it is created).
 
 
-Finally, another strategy to allow access to your VM without requiring additional network configuration on the host or VM is to use _port forwarding_.
+Finally, another strategy to allow access to your VM without requiring additional network configuration on the host or VM is to use _port forwarding_, which is usually used in addition to NAT networking. For example, you can see this configuration setting in Networking => Adapter 1 => Advanced => Port Forwarding.
 
 ![img](imgs/VM-portforward.png)
 
