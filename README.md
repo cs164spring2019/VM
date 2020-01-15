@@ -72,7 +72,7 @@ Your VM would not be very useful if it does not have any way to connect to a net
 
 There are four primary ways to virtualize the network:
 
-* Network Address Translation (NAT), which is the default.
+* **Network Address Translation (NAT)**
   ![VM-NAT](imgs/VM-NAT.png)
   A NAT network provides a simple way for your VM to connect to external networks. Incoming network requests are translated by the virtualization software and routed to the appropriate VM.
 
@@ -94,7 +94,7 @@ There are four primary ways to virtualize the network:
    Request timeout for icmp_seq 1
    ```
 
-* Bridged network
+* **Bridged network**
    ![VM-Bridge](imgs/VM-bridged.png)
    A bridged network will share a host network interface, by filtering and routing network traffic belonging to the VM to a virtual network interface. In effect, your VM is on the same network as your host computer.
 
@@ -116,11 +116,11 @@ There are four primary ways to virtualize the network:
 
    A bridged network can be useful if you want to interact with your VM from your host or even other computers on your network.
 
-* Internal network
+* **Internal network**
 
   An internal network allows multiple VMs on the same internal network to communicate; however, the network cannot be reached by the host. 
 
-* Host-Only network.
+* **Host-Only network**
 
   A host-only network creates a local loopback network on the host machine. Hosts and VMs can then communicate on the host-only network.
 
