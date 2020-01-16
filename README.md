@@ -218,30 +218,55 @@ ssh -i /Users/cjparnin/.bakerx/baker_rsa root@127.0.0.1 -p 2008 -o StrictHostKey
 
 ## Creating an "Up" script for a repo.
 
-Imagine you wanted to create a simple script that let you easily create a simple development environment nodejs.
+Imagine you wanted to create a simple script that let you easily create a simple development environment for running a git repo.
 
-### Test script
+### Example script
 
-git clone 
-
-### Pulling image
-
-Start an new virtual machine instance called `VM0`, using the 18.04 image
+Inside a bash terminal, create and run a script called `./up.sh`.
 
 ```bash
-bakerx run VM0 bionic
+#!/bin/bash
+ssh_cmd=$(bakerx run app-vm alpine3.9-simple | tail -1)
+$ssh_cmd << 'END_DOC'
+
+apk add --update --no-cache nodejs npm git
+git clone https://github.com/CSC-DevOps/App
+cd App
+npm install
+ifconfig | grep 'eth1' -A 1
+exit
+END_DOC
+
+echo $ssh_cmd
 ```
 
+Running the script should initialize a new vm, called "app-vm" with a node.js environment. You should be able to ssh into the machine, and run `cd App; node main.js start 9000`.
 
-Pull, bakerx run.
-Run apt-get
-Run install nodejs
-ssh <<< post-config.
+If you visit the bridged network address of your VM on port 9000, you should see the app running.
 
-### Bonus:
+### Own your own.
 
-* Adding a bridge network in bionic.
-* add sync folders.
+Create another version of the "Up" script; however, running the code inside an ubuntu 18.04 instance.
+
+
+### Extra features:
+
+* **Adding a bridge network in bionic**. The default ubuntu image does not come with secondary NIC, so you will only have the NAT network on `enp0s3`.
+
+  Update your script to copy the following to `/etc/netplan/52-bridge.yml` on your VM.
+
+  ```yaml
+  network:
+    ethernets:
+        enp0s8:
+            dhcp4: true
+    version: 2
+  ```
+  Then run `sudo netplan apply`. Running `ifconfig` will show the updated network configuration.
+
+* **Add sync folders**. You can mount your host file system and use it within the VM. This can be very useful for editing files on your host computer (e.g. Code), but running your VM.
+
+This can be a bit complicated. [Example code here](https://github.com/ottomatica/node-virtualbox/blob/master/lib/VBoxProvider.js#L264).
 
 ### Conclusion
 
