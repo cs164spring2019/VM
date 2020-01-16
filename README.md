@@ -246,17 +246,17 @@ If you visit the bridged network address of your VM on port 9000, you should see
 
 ### Own your own.
 
-Create another version of the "Up" script; however, 
+Create another version of the "Up" script (called `up-ubuntu.sh`) based on your `up.sh`; however, 
 
 * 1) Running the code inside an ubuntu 18.04 instance.
-  Fetch an image with: `bakerx pull cloud-images.ubuntu.com bionic`
+     Fetch an image with: `bakerx pull cloud-images.ubuntu.com bionic`
 * 2) Update the script to use ubuntu-based commands (e.g. `apt-get`)
 * 3) Add a port forward from `localhost:6000` => `VM:9000`.
 
-  The following command can be used when the VM is running to add the port forward:
-  ```
-  VBoxManage controlvm app-ubuntu natpf1 nodeport,tcp,,6000,,9000
-  ```
+     The following command can be used when the VM is running to add the port forward:
+     ```
+     VBoxManage controlvm app-ubuntu natpf1 nodeport,tcp,,6000,,9000
+     ```
 
 ### Extra features:
 
