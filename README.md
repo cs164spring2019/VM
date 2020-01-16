@@ -246,8 +246,17 @@ If you visit the bridged network address of your VM on port 9000, you should see
 
 ### Own your own.
 
-Create another version of the "Up" script; however, running the code inside an ubuntu 18.04 instance.
+Create another version of the "Up" script; however, 
 
+* 1) Running the code inside an ubuntu 18.04 instance.
+  Fetch an image with: `bakerx pull cloud-images.ubuntu.com bionic`
+* 2) Update the script to use ubuntu-based commands (e.g. `apt-get`)
+* 3) Add a port forward from `localhost:6000` => `VM:9000`.
+
+  The following command can be used when the VM is running to add the port forward:
+  ```
+  VBoxManage controlvm app-ubuntu natpf1 nodeport,tcp,,6000,,9000
+  ```
 
 ### Extra features:
 
@@ -264,13 +273,15 @@ Create another version of the "Up" script; however, running the code inside an u
   ```
   Then run `sudo netplan apply`. Running `ifconfig` will show the updated network configuration.
 
+* **Reimplement your Up script to use VBoxManage**. You can run the sequence of VBoxManage commands inside your script instead of running through `bakerx run`.
+
 * **Add sync folders**. You can mount your host file system and use it within the VM. This can be very useful for editing files on your host computer (e.g. Code), but running your VM.
 
 This can be a bit complicated. [Example code here](https://github.com/ottomatica/node-virtualbox/blob/master/lib/VBoxProvider.js#L264).
 
 ### Conclusion
 
-You just built [vagrant](https://www.vagrantup.com/)!
+If you followed most of these steps, you have essentially just built [vagrant](https://www.vagrantup.com/)!
 
 ```bash
 $ vagrant init hashicorp/bionic64
