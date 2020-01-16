@@ -277,7 +277,7 @@ Create another version of the "Up" script (called `up-ubuntu.sh`) based on your 
 
 * **Add sync folders**. You can mount your host file system and use it within the VM. This can be very useful for editing files on your host computer (e.g. Code), but running your VM.
 
-This can be a bit complicated. [Example code here](https://github.com/ottomatica/node-virtualbox/blob/master/lib/VBoxProvider.js#L264).
+  This can be a bit complicated. [Example code here](https://github.com/ottomatica/node-virtualbox/blob/master/lib/VBoxProvider.js#L264).
 
 ### Conclusion
 
