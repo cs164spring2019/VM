@@ -3,7 +3,7 @@
 ## Preqs
 
 * Ensure you have `node --version >= 12.14`.
-* Ensure you have `bakerx --version >= 0.6.1`.
+* Ensure you have `bakerx --version >= 0.6.2`.
 * Ensure you have [VirtualBox installed](https://www.virtualbox.org/).
 
 To install latest bakerx, run `npm install -g ottomatica/bakerx`.
