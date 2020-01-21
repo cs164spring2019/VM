@@ -251,11 +251,11 @@ Create another version of the "Up" script (called `up-ubuntu.sh`) based on your 
 * 1) Running the code inside an ubuntu 18.04 instance.
      Fetch an image with: `bakerx pull cloud-images.ubuntu.com bionic`
 * 2) Update the script to use ubuntu-based commands (e.g. `apt-get`)
-* 3) Add a port forward from `localhost:6000` => `VM:9000`.
+* 3) Add a port forward from `localhost:8080` => `VM:9000`.
 
      The following command can be used when the VM is running to add the port forward:
      ```
-     VBoxManage controlvm app-ubuntu natpf1 nodeport,tcp,,6000,,9000
+     VBoxManage controlvm app-ubuntu natpf1 nodeport,tcp,,8080,,9000
      ```
 
 ### Extra features:
