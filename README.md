@@ -184,7 +184,7 @@ Executing VBoxManage modifyvm alp3.9  --uart1 0x3f8 4 --uartmode1 disconnected
 ```
 
 Create a network interface (eth0) configured with NAT networking.
-Create a network interface (eth1) configured with bridged networking with the wireless interface (en0) on the host machine. Finally, add a portforward [host:2008 => VM:22].
+Create a network interface (eth1) configured with bridged networking with the wireless interface (en0) on the host machine. Finally, add a portforward [host:2008 => VM:22]. Note that the suffix of the commands correspond to which NIC is being addressed (e.g. `--natpf1` corresponds to the first NIC, and `--natpf2` corresponds to the second NIC).
 
 ```
 Executing VBoxManage modifyvm alp3.9 --nic1 nat
