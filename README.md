@@ -262,7 +262,7 @@ Create another version of the "Up" script (called `up-ubuntu.sh`) based on your 
 
 * **Adding a bridge network in bionic**. The default ubuntu image does not come with secondary NIC, so you will only have the NAT network on `enp0s3`.
 
-  Update your script to copy the following to `/etc/netplan/52-bridge.yml` on your VM.
+  Update your script to copy the following to `/etc/netplan/52-bridge.yaml` on your VM.
 
   ```yaml
   network:
