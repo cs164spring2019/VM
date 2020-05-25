@@ -245,6 +245,11 @@ Running the script should initialize a new vm, called "app-vm" with a node.js en
 
 If you visit the bridged network address of your VM on port 9000, you should see the app running.
 
+⚠️Running in Git Bash: The path `C:/Users/User/.bakerx/` is really `/c/Users/User/.bakerx`. Git Bash will map this for commands run in its shell. But when you run it as a script within the vanilla `/bin/bash` executable, when quoted, that mapping does not occur, and as a result, you cannot connect to your VM with the ssh command because no identify file can be found.
+
+A simple work around is to remove the quote using the `tr` command: `ssh_cmd=$(bakerx ssh-info app-vm | tr - d '"')`
+
+
 ### Own your own.
 
 Create another version of the "Up" script (called `up-ubuntu.sh`) based on your `up.sh`; however, 
