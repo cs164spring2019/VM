@@ -1,6 +1,6 @@
 #!/bin/bash
-#bakerx delete vm app-vm
-ssh_cmd=$(bakerx run app-vm alpine3.9-simple | tail -1)
+bakerx run app-vm alpine3.9-simple
+ssh_cmd=$(bakerx ssh-info app-vm)
 $ssh_cmd << 'END_DOC'
 
 apk add --update --no-cache nodejs npm git
