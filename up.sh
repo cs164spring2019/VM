@@ -1,6 +1,6 @@
 #!/bin/bash
 #bakerx delete vm app-vm
-bakerx run app-vm alpine3.9-simple
+bakerx run app-vm alpine3.9-simple -b
 ssh_cmd=$(bakerx ssh-info app-vm)
 $ssh_cmd << 'END_DOC'
 

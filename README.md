@@ -226,7 +226,7 @@ Inside a bash terminal, create and run a script called `./up.sh`.
 
 ```bash
 #!/bin/bash
-bakerx run app-vm alpine3.9-simple
+bakerx run app-vm alpine3.9-simple -b
 ssh_cmd=$(bakerx ssh-info app-vm)
 $ssh_cmd << 'END_DOC'
 
@@ -247,7 +247,7 @@ If you visit the bridged network address of your VM on port 9000, you should see
 
 ⚠️ _Running in Git Bash_: The path `C:/Users/User/.bakerx/` is really `/c/Users/User/.bakerx`. Git Bash will map this for commands run in its shell. But when you run it as a script within the vanilla `/bin/bash` executable, when quoted, that mapping does not occur, and as a result, you cannot connect to your VM with the ssh command because no identify file can be found.
 
-A simple work around is to remove the quote using the `tr` command: `ssh_cmd=$(bakerx ssh-info app-vm | tr - d '"')`
+A simple work around is to remove the quote using the `tr` command: `ssh_cmd=$(bakerx ssh-info app-vm -b | tr - d '"')`
 
 
 ### Own your own.
