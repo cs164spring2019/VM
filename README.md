@@ -1,24 +1,33 @@
 # VM
 
+In this workshop, we will be exploring concepts related to virtualization by understanding virtualization concepts in depth, and then manually constructing a virtual machine.
+
 ## Preqs
 
-* Ensure you have `node --version >= 12.14`.
-* Ensure you have `bakerx --version >= 0.6.2`.
-* Ensure you have [VirtualBox installed](https://www.virtualbox.org/).
+You must be able to pass the `opunit` checks for virtualization, and `bakerx`, and `VirtualBox` installed.
+You may need to seek help if you are unable to get virtualization to work on your device.
 
-To install latest bakerx, run `npm install -g ottomatica/bakerx`.
+You can *import* this workshop as a notebook, or manually run the instructions in a terminal and editor.
 
-## Creating a headless micro VM with bakerx
+```bash | {type: 'command'}
+docable-server import https://github.com/CSC-DevOps/VM
+```
+
+## Hello, Virtual Machine.
+
+We will create a simple virtual machine using `bakerx`. Our primary goal is to ensure the basics are working, we will not be doing anything fancy&mdash;yet.
+
+#### Getting virtual machine image
 
 Pull an 3.9 alpine image.
 
-```
+```bash | {type:'command', stream: true}
 bakerx pull alpine3.9-simple ottomatica/slim#images 
 ```
 
 Check which images are available on your system.
 
-```bash
+```bash | {type:'command'}
 bakerx images
 ```
 
@@ -31,26 +40,31 @@ Verify your image downloaded.
 │  'alpine3.9-simple'   │ 'vbox.iso' │ 'qemu,vbox' │
 ```
 
+### Creating virtual machine instance.
+
 Create a new VM instance, named "alp3.9".
 
-```bash
+```bash | {type: 'command', stream: true, failed_when: 'exitCode !=0'}
 bakerx run alp3.9 alpine3.9-simple
 ```
 
-![img](imgs/VM-run.png)
+<!-- ![img](imgs/VM-run.png) -->
+
+### Connecting to VM via ssh.
+
+Using the ssh command provided `bakerx ssh alp3.9`, so we can connect to the virtual machine.
+
+```bash | {type: 'repl'}
+```
 
 
-### Virtual Machine Inspection through VirtualBox Show.
+## Virtual Machine Inspection through VirtualBox Show.
 
 ![img](imgs/VM-preview.png)
 
 Let's ensure we can interact with the VM by clicking "Show". This will open a small terminal into virtual box. This is useful for quickly determining if your VM is working, which could fail to boot, or otherwise not be reachable if networking is broken.
 
 Close the preview window, but still leave the VM "Continue running in the background".
-
-### Connecting to VM via ssh.
-
-Using the ssh command provided by the `bakerx run` command, we can connect to the machine.
 
 ### Storage/Disk
 
