@@ -15,9 +15,9 @@ docable-server import https://github.com/CSC-DevOps/VM
 
 ## Hello, Virtual Machine.
 
-We will create a simple virtual machine using `bakerx`. Our primary goal is to ensure the basics are working, we will not be doing anything fancy&mdash;yet.
+We will create a simple virtual machine using `bakerx`. Our primary goal is to ensure the basics are working, we will not be doing anything fancy&mdash;yet. We will explain all the bits in the next section.
 
-#### Getting virtual machine image
+### Getting virtual machine image
 
 Pull an 3.9 alpine image.
 
@@ -34,10 +34,13 @@ bakerx images
 Verify your image downloaded.
 
 ```
-┬───────────────────────┬────────────┬─────────────┐
-│         image         │   format   │  providers  │
-┼───────────────────────┼────────────┼─────────────┤
-│  'alpine3.9-simple'   │ 'vbox.iso' │ 'qemu,vbox' │
+│  'alpine3.9-simple'     │ 'vbox.iso' │ 'qemu,vbox' │
+```
+
+**Error**: If your image download failed, or failed to extract, you can run the following to delete the image. You can then try to run the `pull` command again.
+
+```bash | {type:'command'}
+bakerx delete image alpine3.9-simple
 ```
 
 ### Creating virtual machine instance.
@@ -48,11 +51,13 @@ Create a new VM instance, named "alp3.9".
 bakerx run alp3.9 alpine3.9-simple
 ```
 
+⚠️: If this command does not complete successfully, there is likely an issue with virtualization on your machine. You should move on to the next section to see if you can get more information about your machine, and then reach out to the message board for help.
+
 <!-- ![img](imgs/VM-run.png) -->
 
 ### Connecting to VM via ssh.
 
-Using the ssh command provided `bakerx ssh alp3.9`, so we can connect to the virtual machine.
+Using the ssh command provided `bakerx ssh alp3.9`, so we can connect to the virtual machine. You can use `exit` to end your ssh sesssion.
 
 ```bash | {type: 'repl'}
 ```
@@ -60,9 +65,9 @@ Using the ssh command provided `bakerx ssh alp3.9`, so we can connect to the vir
 
 ## Virtual Machine Inspection through VirtualBox Show.
 
-![img](imgs/VM-preview.png)
-
 Let's ensure we can interact with the VM by clicking "Show". This will open a small terminal into virtual box. This is useful for quickly determining if your VM is working, which could fail to boot, or otherwise not be reachable if networking is broken.
+
+![img](imgs/VM-preview.png)
 
 Close the preview window, but still leave the VM "Continue running in the background".
 
