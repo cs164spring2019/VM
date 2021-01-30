@@ -7,14 +7,13 @@
 * Ensure you have [VirtualBox installed](https://www.virtualbox.org/).
 
 To install latest bakerx, run `npm install -g ottomatica/bakerx`.
-If working from the project source, update it by changing into the project folder and run: `git pull`, and then `npm update`.
 
 ## Creating a headless micro VM with bakerx
 
 Pull an 3.9 alpine image.
 
 ```
-bakerx pull ottomatica/slim#images alpine3.9-simple
+bakerx pull alpine3.9-simple ottomatica/slim#images 
 ```
 
 Check which images are available on your system.
