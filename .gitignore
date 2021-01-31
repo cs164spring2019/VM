@@ -1,2 +1,4 @@
 docable_results/*
 .DS_Store
+App/
+*.sh

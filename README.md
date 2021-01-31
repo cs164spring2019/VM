@@ -301,19 +301,17 @@ bakerx pull focal cloud-images.ubuntu.com
 
      The following command can be used when the VM is running to add the port forward:
      ```
-     VBoxManage controlvm app-ubuntu natpf1 nodeport,tcp,,8089,,9000
+     VBoxManage controlvm ubuntu-vm natpf1 nodeport,tcp,,8089,,9000
      ```
-4. Inside your ubuntu VM, run `cd App; node main.js start 9000`.
-5. Check that you can visit your app on the ubuntu machine, by visiting http://localhost:8089.
 
-```bash | {type: 'file', path: 'up-ubuntu.sh', permission: "+x" }
+```bash | {type: 'file', path: 'up-u.sh', permission: "+x" }
 #!/bin/bash
 
 # Create VM
-bakerx run ubuntu-vm bionic
+bakerx run ubuntu-vm focal
 
 # Get ssh command
-ssh_cmd=$(bakerx ssh-info app-vm|tr -d '"')
+ssh_cmd=$(bakerx ssh-info ubuntu-vm|tr -d '"')
 
 # Use heredoc to send script over ssh
 $ssh_cmd << 'END_DOC'
@@ -328,6 +326,12 @@ END_DOC
 echo $ssh_cmd
 ```
 
+4. Inside your ubuntu VM, run `cd App; node main.js start 9000`.
+5. Confirm you can see your port forward inside Virtual Box inspection.
+6. Check that you can visit your app on the ubuntu machine, by visiting http://localhost:8089.
+
+```bash | {type: 'repl'}
+```
 
 ### Extra features:
 
