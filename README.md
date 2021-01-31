@@ -335,7 +335,7 @@ echo $ssh_cmd
 
 ### Extra features:
 
-* **Adding a bridge network or NAT in bionic**. The default ubuntu image does not come with secondary NIC, so you will only have the private network on `enp0s3`. You can add `-b`, to enable bridged networking or `--ip 192.168.33.100` to enable a NAT network with a static ip.
+* **Adding a bridge network or host-only network in ubuntu**. The default ubuntu image does not come with secondary NIC, so you will only have the private network on `enp0s3`. You can add `-b`, to enable bridged networking or `--ip 192.168.33.100` to enable a NAT network with a static ip.
 
   Update your script to copy the following to `/etc/netplan/52-bridge.yaml` on your VM.
 
