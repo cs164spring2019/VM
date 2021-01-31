@@ -173,7 +173,7 @@ How did `bakerx` create the micro VM?
 
 `bakerx` will first look for an available port for forwarding the ssh connection. It reads through other VMs in virtualbox and will exclude ports already used by machines (even dormant/powered off ones) as well as ports actively used on the host.
 
-```
+``` bash | {type: 'info', range: {start:2, end: 3}}
 $ bakerx run alp3.9 alpine3.9-simple
 Creating alp3.9 using vbox...
 Searching between ports 2002 and 2999 for ssh on localhost for this vm.
@@ -236,55 +236,102 @@ ssh -i /Users/cjparnin/.bakerx/baker_rsa root@127.0.0.1 -p 2008 -o StrictHostKey
 
 ## Creating an "Up" script for a repo.
 
-Imagine you wanted to create a simple script that let you easily create a simple development environment for running a git repo.
+Imagine you wanted to create a simple script that let you easily create a simple development environment.
 
 ### Example script
 
-Inside a bash terminal, create and run a script called `./up.sh`.
+Create the following script, called `./up.sh`.
 
-```bash
+```bash | {type: 'file', path: 'up.sh', permission: "+x" }
 #!/bin/bash
+
+# Create VM, with bridged networking enabled.
 bakerx run app-vm alpine3.9-simple -b
-ssh_cmd=$(bakerx ssh-info app-vm)
+
+# Get ssh command
+ssh_cmd=$(bakerx ssh-info app-vm|tr -d '"')
+
+# Use heredoc to send script over ssh
 $ssh_cmd << 'END_DOC'
 
+# Install packages
 apk add --update --no-cache nodejs npm git
+# Get projects
 git clone https://github.com/CSC-DevOps/App
+# Setup project
 cd App
 npm install
-ifconfig | grep 'eth1' -A 1
+
 exit
 END_DOC
 
 echo $ssh_cmd
 ```
 
-Running the script should initialize a new vm, called "app-vm" with a node.js environment. You should be able to ssh into the machine, and run `cd App; node main.js start 9000`.
+Inside a bash shell, run the script for `./up.sh`. 
 
-If you visit the bridged network address of your VM on port 9000, you should see the app running.
+Then, using the terminal, perform the following steps:
 
-⚠️ _Running in Git Bash_: The path `C:/Users/User/.bakerx/` is really `/c/Users/User/.bakerx`. Git Bash will map this for commands run in its shell. But when you run it as a script within the vanilla `/bin/bash` executable, when quoted, that mapping does not occur, and as a result, you cannot connect to your VM with the ssh command because no identify file can be found.
+1. Run `bakerx ssh app-vm` to access the virtual machine.
+2. Obtain a IPv4 address for your brigded network by running `udhcpc -i eth1`.
+3. Set `ifconfig eth1 [ip]`
+4. Start the node.js server, by running `cd App; node main.js start 9000`.
+5. In your browser, visit `http://[ip]:9000/` --- you should be able to see a message in the browser from your program!
 
-A simple work around is to remove the quote using the `tr` command: `ssh_cmd=$(bakerx ssh-info app-vm -b | tr - d '"')`
+You can use `bakerx delete vm app-vm` to remove the VM in case you need to start again.
 
+```bash | {type: 'repl'}
+```
 
 ### Own your own.
 
-Create another version of the "Up" script (called `up-ubuntu.sh`) based on your `up.sh`; however, 
+Create another version of the "Up" script, but this time targeted for an Ubuntu image (called `up-ubuntu.sh`) based on your `up.sh` script.
 
-* 1) Running the code inside an ubuntu 18.04 instance.
-     Fetch an image with: `bakerx pull cloud-images.ubuntu.com bionic`
-* 2) Update the script to use ubuntu-based commands (e.g. `apt-get`)
-* 3) Add a port forward from `localhost:8080` => `VM:9000`.
+**Note:**, you will have to use different commands (such as apt-get), to perform some of the tasks.
+
+To start, we will need an Ubuntu 20.04 image. Use the following command to pull the latest image. ⏳ Note, the following might take a bit of time, so you may want to run this in your own terminal:
+
+```bash | {type: 'command'}
+bakerx pull focal cloud-images.ubuntu.com
+```
+
+1. Update the script to use ubuntu-based commands (e.g. `apt-get`)
+2. Update the script to clone the CSC-DevOps/App repo and run `npm install`.
+3. Update the script to add a port forward from `localhost:8089` => `VM:9000`.
 
      The following command can be used when the VM is running to add the port forward:
      ```
-     VBoxManage controlvm app-ubuntu natpf1 nodeport,tcp,,8080,,9000
+     VBoxManage controlvm app-ubuntu natpf1 nodeport,tcp,,8089,,9000
      ```
+4. Inside your ubuntu VM, run `cd App; node main.js start 9000`.
+5. Check that you can visit your app on the ubuntu machine, by visiting http://localhost:8089.
+
+```bash | {type: 'file', path: 'up-ubuntu.sh', permission: "+x" }
+#!/bin/bash
+
+# Create VM
+bakerx run ubuntu-vm bionic
+
+# Get ssh command
+ssh_cmd=$(bakerx ssh-info app-vm|tr -d '"')
+
+# Use heredoc to send script over ssh
+$ssh_cmd << 'END_DOC'
+
+# Install packages
+# Get project
+# Setup project
+
+exit
+END_DOC
+
+echo $ssh_cmd
+```
+
 
 ### Extra features:
 
-* **Adding a bridge network in bionic**. The default ubuntu image does not come with secondary NIC, so you will only have the NAT network on `enp0s3`.
+* **Adding a bridge network or NAT in bionic**. The default ubuntu image does not come with secondary NIC, so you will only have the private network on `enp0s3`. You can add `-b`, to enable bridged networking or `--ip 192.168.33.100` to enable a NAT network with a static ip.
 
   Update your script to copy the following to `/etc/netplan/52-bridge.yaml` on your VM.
 
@@ -305,7 +352,7 @@ Create another version of the "Up" script (called `up-ubuntu.sh`) based on your 
 
 ### Conclusion
 
-If you followed most of these steps, you have essentially just built [vagrant](https://www.vagrantup.com/)!
+If you followed most of these steps, you have essentially just built [vagrant](https://www.vagrantup.com/), which is a classic tool for creating simple virtual machines.
 
 ```bash
 $ vagrant init hashicorp/bionic64
