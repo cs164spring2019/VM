@@ -71,6 +71,8 @@ Let's ensure we can interact with the VM by clicking "Show". This will open a sm
 
 Close the preview window, but still leave the VM "Continue running in the background".
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/mGcXdwiUX6Y" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ### Storage/Disk
 
 ![img](imgs/VM-storage-iso.png)
