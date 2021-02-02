@@ -65,9 +65,11 @@ Using the ssh command provided `bakerx ssh alp3.9`, so we can connect to the vir
 
 ## Virtual Machine Inspection through VirtualBox Show.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Y6CNiuEQfvM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 Let's ensure we can interact with the VM by clicking "Show". This will open a small terminal into virtual box. This is useful for quickly determining if your VM is working, which could fail to boot, or otherwise not be reachable if networking is broken.
+
+📹 **Watch:** The short video, demoing the virtual machine creation and inspection.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Y6CNiuEQfvM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 <!-- ![img](imgs/VM-preview.png) -->
 
