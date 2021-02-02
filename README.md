@@ -9,7 +9,7 @@ You may need to seek help if you are unable to get virtualization to work on you
 
 You can *import* this workshop as a notebook, or manually run the instructions in a terminal and editor.
 
-```bash | {type: 'command'}
+```bash
 docable-server import https://github.com/CSC-DevOps/VM
 ```
 
@@ -71,7 +71,7 @@ Let's ensure we can interact with the VM by clicking "Show". This will open a sm
 
 Close the preview window, but still leave the VM "Continue running in the background".
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/mGcXdwiUX6Y" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Y6CNiuEQfvM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### Storage/Disk
 
