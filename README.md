@@ -277,10 +277,11 @@ Inside a bash shell, run the script for `./up.sh`.
 Then, using the terminal, perform the following steps:
 
 1. Run `bakerx ssh app-vm` to access the virtual machine.
-2. Obtain a IPv4 address for your brigded network by running `udhcpc -i eth1`.
-3. Set `ifconfig eth1 [ip]`
-4. Start the node.js server, by running `cd App; node main.js start 9000`.
-5. In your browser, visit `http://[ip]:9000/` --- you should be able to see a message in the browser from your program!
+2. Check if you see a ipv4 network address for your VM by running `ifconfig`. This is the ip address you are getting from your home network, bridged by your host's computer ethernet card.
+   - If not, Obtain a IPv4 address for your brigded network by running `udhcpc -i eth1`.
+   - Then, set `ifconfig eth1 [ip]`
+3. Start the node.js server, by running `cd App; node main.js start 9000`.
+4. In your browser, visit `http://[ip]:9000/` --- you should be able to see a message in the browser from your program!
 
 You can use `bakerx delete vm app-vm` to remove the VM in case you need to start again.
 
