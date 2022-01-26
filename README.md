@@ -250,66 +250,23 @@ Inside a bash or Git Bash shell, run the script for `./up.sh`.
 Then, using the terminal, perform the following steps:
 
 1. Run `bakerx ssh app-vm` to access the virtual machine.
-2. Check if you see a ipv4 network address for your VM by running `ifconfig`. This is the ip address you are getting from your home network, bridged by your host's computer ethernet card.
-   - If not, Obtain a IPv4 address for your brigded network by running `udhcpc -i eth1`.
-   - Then, set `ifconfig eth1 [ip]`
-3. Start the node.js server, by running `cd App; node main.js start 9000`.
-4. In your browser, visit `http://[ip]:9000/` --- you should be able to see a message in the browser from your program!
+2. Update the script to install nodejs.
+3. Update the script to run npm install.
 
+Inside the VM.
+
+1. Start the node.js server, by running `cd App; node main.js start 9000`.
+2. In your browser, visit `http://[ip]:9000/` --- you should be able to see a message in the browser from your program!
+
+3. Try adding a port forward.
 You can use `bakerx delete vm app-vm` to remove the VM in case you need to start again.
-
-```bash | {type: 'repl'}
-```
-
-### Own your own.
-
-Create another version of the "Up" script, but this time targeted for an Ubuntu image (called `up-ubuntu.sh`) based on your `up.sh` script.
-
-**Note:**, you will have to use different commands (such as apt-get), to perform some of the tasks.
-
-To start, we will need an Ubuntu 20.04 image. Use the following command to pull the latest image. ⏳ Note, the following might take a bit of time, so you may want to run this in your own terminal:
-
-```bash | {type: 'command'}
-bakerx pull focal cloud-images.ubuntu.com
-```
-
-1. Update the script to use ubuntu-based commands (e.g. `apt-get`)
-2. Update the script to clone the CSC-DevOps/App repo and run `npm install`.
-3. Update the script to add a port forward from `localhost:8089` => `VM:9000`.
 
      The following command can be used when the VM is running to add the port forward:
      ```
      VBoxManage controlvm ubuntu-vm natpf1 nodeport,tcp,,8089,,9000
      ```
 
-```bash | {type: 'file', path: 'up-u.sh', permission: "+x" }
-#!/bin/bash
-
-# Create VM
-bakerx run ubuntu-vm focal
-
-# Get ssh command
-ssh_cmd=$(bakerx ssh-info ubuntu-vm|tr -d '"')
-
-# Use heredoc to send script over ssh
-$ssh_cmd << 'END_DOC'
-
-# Install packages
-# Get project
-# Setup project
-
-exit
-END_DOC
-
-echo $ssh_cmd
-```
-
-4. Inside your ubuntu VM, run `cd App; node main.js start 9000`.
-5. Confirm you can see your port forward inside Virtual Box inspection.
-6. Check that you can visit your app on the ubuntu machine, by visiting http://localhost:8089.
-
-```bash | {type: 'repl'}
-```
+4. Check that you can visit your app on the ubuntu machine, by visiting http://localhost:8089.
 
 ### Extra features:
 
