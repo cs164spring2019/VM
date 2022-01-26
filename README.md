@@ -13,7 +13,7 @@ We will create a simple virtual machine using `bakerx`. Our primary goal is to e
 
 ### Getting virtual machine image
 
-Pull an 3.9 alpine image.
+Pull an ubuntu image.
 
 ```bash | {type:'command', stream: true}
 bakerx pull focal cloud-images.ubuntu.com 
@@ -57,9 +57,7 @@ In a terminal, try `bakerx ssh v1`, so we can connect to the virtual machine. Yo
 
 Let's ensure we can interact with the VM by clicking "Show". This will open a small terminal into virtual box. This is useful for quickly determining if your VM is working, which could fail to boot, or otherwise not be reachable if networking is broken.
 
-📹 **Watch:** The short video, demoing the virtual machine creation and inspection.
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Y6CNiuEQfvM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+📹 **Watch:** [The short video]("https://www.youtube.com/embed/Y6CNiuEQfvM"), demoing the virtual machine creation and inspection (note using alpine vm instead).
 
 <!-- ![img](imgs/VM-preview.png) -->
 
