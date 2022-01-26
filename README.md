@@ -180,24 +180,24 @@ Executing VBoxManage modifyvm v1 --biosbootmenu disabled
 Set the memory size and number of CPUs. Turn off the serial port, which can result in occasional boot errors.
 
 ```
-Executing VBoxManage modifyvm "alp3.9" --memory 1024 --cpus 1
-Executing VBoxManage modifyvm alp3.9  --uart1 0x3f8 4 --uartmode1 disconnected
+Executing VBoxManage modifyvm v1 --memory 1024 --cpus 1
+Executing VBoxManage modifyvm v1  --uart1 0x3f8 4 --uartmode1 disconnected
 ```
 
 Create a network interface (eth0) configured with NAT networking.
 Create a network interface (eth1) configured with bridged networking with the wireless interface (en0) on the host machine. Finally, add a portforward [host:2008 => VM:22]. Note that the suffix of the commands correspond to which NIC is being addressed (e.g. `--natpf1` corresponds to the first NIC, and `--natpf2` would correspond to a second NIC).
 
 ```
-Executing VBoxManage modifyvm alp3.9 --nic1 nat
-Executing VBoxManage modifyvm alp3.9 --nictype1 virtio
-Executing VBoxManage modifyvm alp3.9 --natpf1 "guestssh,tcp,,2008,,22"
+Executing VBoxManage modifyvm v1 --nic1 nat
+Executing VBoxManage modifyvm v1 --nictype1 virtio
+Executing VBoxManage modifyvm v1 --natpf1 "guestssh,tcp,,2008,,22"
 ```
 
 Stop any previous instances of the machine, then "boot" the virtual machine.
 
 ```
-Executing VBoxManage startvm alp3.9 --type emergencystop
-Executing VBoxManage startvm alp3.9 --type headless
+Executing VBoxManage startvm v1 --type emergencystop
+Executing VBoxManage startvm v1 --type headless
 ```
 
 Wait for the VM to boot and for the sshd daemon to start listening on 22. A socket is opened and listens for data to be received from the ssh server:
@@ -210,7 +210,7 @@ The VM is now ready. You can run this ssh command to connect to it.
 Finally, a ssh connection is provided, using an identify file, and the port 2008, which will be forwarded the the VM's ssh port. `StrictHostKeyChecking=no` is also used because conflicting host signatures often exist when you create multiple VMs that use the same port number over time.
 
 ```
-ssh -i /Users/cjparnin/.bakerx/baker_rsa root@127.0.0.1 -p 2008 -o StrictHostKeyChecking=no
+ssh -i /Users/cjparnin/.bakerx/insecure_private_key vagrant@127.0.0.1 -p 2008 -o StrictHostKeyChecking=no
 ```
 
 
