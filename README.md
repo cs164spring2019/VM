@@ -227,29 +227,25 @@ Create the following script, called `./up.sh`.
 #!/bin/bash
 
 # Create VM, with bridged networking enabled.
-bakerx run app-vm alpine3.9-simple -b
+bakerx run app-vm focal
 
 # Get ssh command
 ssh_cmd=$(bakerx ssh-info app-vm|tr -d '"')
+echo $ssh_cmd
 
 # Use heredoc to send script over ssh
 $ssh_cmd << 'END_DOC'
 
 # Install packages
-apk add --update --no-cache nodejs npm git
+sudo apt-get update
+sudo apt-get install git -y
 # Get projects
 git clone https://github.com/CSC-DevOps/App
-# Setup project
-cd App
-npm install
-
 exit
 END_DOC
-
-echo $ssh_cmd
 ```
 
-Inside a bash shell, run the script for `./up.sh`. 
+Inside a bash or Git Bash shell, run the script for `./up.sh`. 
 
 Then, using the terminal, perform the following steps:
 
