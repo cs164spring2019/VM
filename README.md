@@ -7,12 +7,6 @@ In this workshop, we will be exploring concepts related to virtualization by und
 You must be able to pass the `opunit` checks for virtualization, and `bakerx`, and `VirtualBox` installed.
 You may need to seek help if you are unable to get virtualization to work on your device.
 
-You can *import* this workshop as a notebook, or manually run the instructions in a terminal and editor.
-
-```bash
-docable-server import https://github.com/CSC-DevOps/VM
-```
-
 ## Hello, Virtual Machine.
 
 We will create a simple virtual machine using `bakerx`. Our primary goal is to ensure the basics are working, we will not be doing anything fancy&mdash;yet. We will explain all the bits in the next section.
@@ -22,7 +16,7 @@ We will create a simple virtual machine using `bakerx`. Our primary goal is to e
 Pull an 3.9 alpine image.
 
 ```bash | {type:'command', stream: true}
-bakerx pull alpine3.9-simple ottomatica/slim#images 
+bakerx pull focal cloud-images.ubuntu.com 
 ```
 
 Check which images are available on your system.
@@ -34,21 +28,21 @@ bakerx images
 Verify your image downloaded.
 
 ```
-│  'alpine3.9-simple'     │ 'vbox.iso' │ 'qemu,vbox' │
+│  'focal'     │ 'box.ovf' │ 'vbox' │
 ```
 
 **Error**: If your image download failed, or failed to extract, you can run the following to delete the image. You can then try to run the `pull` command again.
 
 ```bash | {type:'command'}
-bakerx delete image alpine3.9-simple
+bakerx delete image focal
 ```
 
 ### Creating virtual machine instance.
 
-Create a new VM instance, named "alp3.9".
+Create a new VM instance, named "v1".
 
 ```bash | {type: 'command', stream: true, failed_when: 'exitCode !=0'}
-bakerx run alp3.9 alpine3.9-simple
+bakerx run v1 focal
 ```
 
 ⚠️: If this command does not complete successfully, there is likely an issue with virtualization on your machine. You should move on to the next section to see if you can get more information about your machine, and then reach out to the message board for help.
@@ -57,11 +51,7 @@ bakerx run alp3.9 alpine3.9-simple
 
 ### Connecting to VM via ssh.
 
-Using the ssh command provided `bakerx ssh alp3.9`, so we can connect to the virtual machine. You can use `exit` to end your ssh sesssion.
-
-```bash | {type: 'repl'}
-```
-
+In a terminal, try `bakerx ssh v1`, so we can connect to the virtual machine. You can use `exit` to end your ssh sesssion.
 
 ## Virtual Machine Inspection through VirtualBox Show.
 
@@ -89,15 +79,6 @@ When a virtual machine is not being used, you have to option to "Power-off" the 
 
 You can also "Save" the VM machine, which will persist the entire state of the machine, including RAM. Similiarly, you can take a "Snapshot" which will copy the state of the VM.
 
-**Persistance lost:** In this case, because the only storage available to our micro VM is a disk drive, if you pull the plug, everything you changed is lost.
-
-Short demo:
-
-> Let's add a file.  
-> Power off the VM.  
-> Start the VM again. Where's the file?
-
-_Note:_ However, _saving_ the VM will still persist the file, as the RAM contents are still perserved.
 
 ### Virtual Networking 
 
@@ -173,29 +154,29 @@ Finally, another strategy to allow access to your VM without requiring additiona
 
 ### How bakerx worked.
 
-How did `bakerx` create the micro VM?
+How did `bakerx` create the VM?
 
 `bakerx` will first look for an available port for forwarding the ssh connection. It reads through other VMs in virtualbox and will exclude ports already used by machines (even dormant/powered off ones) as well as ports actively used on the host.
 
 ``` bash | {type: 'info', range: {start:2, end: 3}}
-$ bakerx run alp3.9 alpine3.9-simple
-Creating alp3.9 using vbox...
+$ bakerx run v1 focal
+Creating v1 using vbox...
 Searching between ports 2002 and 2999 for ssh on localhost for this vm.
 Excluding the following ports already used by VirtualBox VMS: 2002,2010,2003,2004,2005,2006,2007
 Port 2008 is available for ssh on localhost!
 ```
 
-Then, the machine "alp3.9" is registered with VirtualBox, but not running or usable.
+Then, the machine "v1" is registered with VirtualBox with a template image.
 
 ```
-Executing VBoxManage createvm --name "alp3.9" --register
+Executing VBoxManage import "/Users/cjparnin/.bakerx/.persist/images/focal/box.ovf" --vsys 0 --vmname v1
 ```
 
-A simple storage device is added to the VM, like a hard drive. However, in this case, it is more like an optical drive (CD/DVD). This is like loading a CD with the `alpine3.9-simple` into a disk drive and booting a machine. Just how live distributions of linux work.
+The VM will boot using the attached disk and not bother loading the BIOS menu.
 
 ```
-Executing VBoxManage storagectl "alp3.9" --name IDE --add ide
-Executing VBoxManage storageattach alp3.9 --storagectl IDE --port 0 --device 0 --type dvddrive --medium "/Users/cjparnin/.bakerx/.persist/images/alpine3.9-simple/vbox.iso"
+Executing VBoxManage modifyvm v1 --boot1 disk
+Executing VBoxManage modifyvm v1 --biosbootmenu disabled
 ```
 
 Set the memory size and number of CPUs. Turn off the serial port, which can result in occasional boot errors.
@@ -206,13 +187,11 @@ Executing VBoxManage modifyvm alp3.9  --uart1 0x3f8 4 --uartmode1 disconnected
 ```
 
 Create a network interface (eth0) configured with NAT networking.
-Create a network interface (eth1) configured with bridged networking with the wireless interface (en0) on the host machine. Finally, add a portforward [host:2008 => VM:22]. Note that the suffix of the commands correspond to which NIC is being addressed (e.g. `--natpf1` corresponds to the first NIC, and `--natpf2` corresponds to the second NIC).
+Create a network interface (eth1) configured with bridged networking with the wireless interface (en0) on the host machine. Finally, add a portforward [host:2008 => VM:22]. Note that the suffix of the commands correspond to which NIC is being addressed (e.g. `--natpf1` corresponds to the first NIC, and `--natpf2` would correspond to a second NIC).
 
 ```
 Executing VBoxManage modifyvm alp3.9 --nic1 nat
 Executing VBoxManage modifyvm alp3.9 --nictype1 virtio
-Executing VBoxManage modifyvm alp3.9 --nic2 bridged --bridgeadapter2 "en0"
-Executing VBoxManage modifyvm alp3.9 --nictype2 virtio
 Executing VBoxManage modifyvm alp3.9 --natpf1 "guestssh,tcp,,2008,,22"
 ```
 
